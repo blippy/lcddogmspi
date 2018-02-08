@@ -93,8 +93,16 @@ In practise, VCC is the same as VDD
 Glossay:
 
 * CSB =  chip select wire, aka SS in more modern parlance
-* RS = Register Select, aka MISO in more modern parlance
+* RS = Register Select, aka MISO in more modern parlance. Low=command, high=data
+* RW = Read/Write. Low=write, high=read
 * SI = Serial In, aka MOSI in more modern parlance
 * SCK = Serial clock
 * SPI = Serial Perihperal Interface
 * SS = Slave Select
+* `-` = unconnected pin
+
+## References
+
+* [Datasheet](http://www.lcd-module.com/eng/pdf/doma/dog-me.pdf) - PDF containing technical details about the display
+* [Display-O-Tron](https://shop.pimoroni.com/products/display-o-tron-lcd) - where I bought the product. It also gives background information
+* 
