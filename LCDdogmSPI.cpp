@@ -28,12 +28,12 @@
 
 #include "LCDdogmSPI.h"
 
-extern "C" {
+//extern "C" {
   #include <stdio.h>  //not needed yet
   #include <string.h> //needed for strlen()
   #include <inttypes.h>
-  #include "WConstants.h"  //all things wiring / arduino
-}
+  #include "Arduino.h"  //all things wiring / arduino
+//}
 
 
 #define SPI_MOSI_PIN 11
