@@ -34,7 +34,7 @@ public:
   LCDdogmSPI(int num_lines, int chip_select_pin, int register_select_pin);
   void commandWrite(char value);
   void dataWrite(char value);
-  void init();
+  void init(int mosi_pin=11, int clk_pin=13);
   void print(char value);
   void println(char value[]);
   void clear();

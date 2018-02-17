@@ -28,16 +28,12 @@
 
 #include "LCDdogmSPI.h"
 
-//extern "C" {
-  #include <stdio.h>  //not needed yet
-  #include <string.h> //needed for strlen()
-  #include <inttypes.h>
-  #include "Arduino.h"  //all things wiring / arduino
-//}
+#include <stdio.h>  //not needed yet
+#include <string.h> //needed for strlen()
+#include <inttypes.h>
+#include "Arduino.h"  //all things wiring / arduino
+#include <util/atomic.h>
 
-
-#define SPI_MOSI_PIN 11
-#define SPI_CLK_PIN 13
 
 // define command bytes for the LCD
 #define LCDCMD_CLR 1
@@ -58,11 +54,11 @@ LCDdogmSPI::LCDdogmSPI(int num_lines, int chip_select_pin, int register_select_p
   lines = num_lines;
 }
 
-void LCDdogmSPI::init() {
+void LCDdogmSPI::init(int mosi_pin, int clk_pin) {
   char clr;
   char linesreg;
-  pinMode(SPI_MOSI_PIN, OUTPUT);
-  pinMode(SPI_CLK_PIN,OUTPUT);
+  pinMode(mosi_pin, OUTPUT);
+  pinMode(clk_pin,OUTPUT);
   pinMode(cs_pin,OUTPUT);
   pinMode(rs_pin,OUTPUT);
   
@@ -135,6 +131,16 @@ void LCDdogmSPI::cursorTo(int line_num, int x) {
 
 void LCDdogmSPI::spiTransfer(volatile char data)
 {
-  SPDR = data;                    // Start the transmission
-  while (!(SPSR & (1<<SPIF)));    // Wait for the end of the transmission
+#if 0	
+	SPDR = data;                    // Start the transmission
+	while (!(SPSR & (1<<SPIF)));    // Wait for the end of the transmission
+#else
+	USIDR = data;
+	USISR = _BV(USIOIF);                //clear counter and counter overflow interrupt flag
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { //ensure a consistent clock period
+		while ( !(USISR & _BV(USIOIF)) ) USICR |= _BV(USITC);
+	}
+	//return USIDR;
+#endif
+
 }

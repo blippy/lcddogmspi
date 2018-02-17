@@ -1,7 +1,7 @@
 #include <LCDdogmSPI.h>
 
-#define CSB_PIN 10
-#define RS_PIN 9
+#define CSB_PIN 10 // SS slave select
+#define RS_PIN 9   // MISO
 #define LCD_LINES 3
 
 // This initializes for a 3 LINES display
